@@ -13,6 +13,6 @@ namespace WSPay.Net
         IDictionary<string, string> CreateAutoServiceRequest(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double totalPrice, AutoServiceType? serviceType = null);
 
-        IDictionary<string, string> CreateStatusCheckRequest(Shop shop, string shoppingCartId);
+        StatusCheckRequest CreateStatusCheckRequest(Shop shop, string shoppingCartId);
     }
 }

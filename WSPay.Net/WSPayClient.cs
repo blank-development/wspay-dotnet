@@ -8,21 +8,20 @@
     
     public class WSPayApiClient: IWSPayClient
     {
-        private readonly Settings settings;
         private readonly HttpClient httpClient;
 
-        public WSPayApiClient(Settings settings, HttpClient httpClient)
+        public WSPayApiClient(HttpClient httpClient)
         {
-            this.settings = settings;
-            this.httpClient = httpClient;
-
+            this.httpClient = httpClient ?? BuildDefaultHttpClient();
+            this.httpClient.BaseAddress = WSPayConfiguration.BaseUrl;
+            
             // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
         public async Task<ApiResponse> SendAutoServicesRequestAsync(IDictionary<string, string> postData)
         {
             var formUrlEncodedData = new FormUrlEncodedContent(postData);
-            var result = await httpClient.PostAsync(this.settings.AutoServicesUrl, formUrlEncodedData).ConfigureAwait(false);;
+            var result = await httpClient.PostAsync("WSPayAutoServices.aspx", formUrlEncodedData).ConfigureAwait(false);;
             var resultContent = await result.Content.ReadAsStringAsync();
 
             var isActionSuccessful = WSPayHelpers.IsActionSuccessful(resultContent);
@@ -34,11 +33,29 @@
 
         public async Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
         {
-            var requestContent =  new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-            var result = await httpClient.PostAsync(this.settings.ProcessPaymentJsonApiUrl, requestContent).ConfigureAwait(false);
+            var requestContent = BuildRequestContent(request);
+            var result = await httpClient.PostAsync("api/services/ProcessPayment", requestContent).ConfigureAwait(false);
 
             var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<ProcessPaymentResponse>(resultContent);
+        }
+
+        public async Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request)
+        {
+            var requestContent = BuildRequestContent(request);
+            var result = await httpClient.PostAsync("api/services/StatusCheck", requestContent).ConfigureAwait(false);
+            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<StatusCheckResponse>(resultContent);
+        }
+
+        private HttpClient BuildDefaultHttpClient()
+        {
+            return new HttpClient();
+        }
+
+        private StringContent BuildRequestContent<T>(T request)
+        {
+            return new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
         }
     }
 }

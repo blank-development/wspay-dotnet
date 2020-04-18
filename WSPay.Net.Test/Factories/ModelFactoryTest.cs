@@ -4,14 +4,12 @@ namespace WSPay.Net.Test
     using FluentAssertions;
     using Xunit;
     
-    public class ModelFactoryTest
+    public class ModelFactoryTest: WSPayTestBase
     {
         private readonly IModelFactory modelFactory;
-        private readonly Settings settings;
         public ModelFactoryTest()
         {
-            this.settings = TestSettingsFactory.Create();
-            this.modelFactory = new ModelFactory(this.settings, new SignatureFactory(), new TestTimeProvider());
+            this.modelFactory = new ModelFactory(new SignatureFactory(), new TestTimeProvider());
         }
         
         [Fact]
@@ -20,10 +18,10 @@ namespace WSPay.Net.Test
             var actual = this.modelFactory.CreateProcessPaymentRequest("123", 150.25, "token", "token123");
             var expected = new ProcessPaymentRequest
             {
-                ShopID = this.settings.TokenShop.ShopId,
+                ShopID = "tokenShopId",
                 ShoppingCartID = "123",
                 DateTime = "20200401152030",
-                Signature = "ee9d361c6cc9d904db856034b1098318",
+                Signature = "a7e5f92c6238781650a12b4632a22381",
                 TokenNumber = "token123",
                 Token = "token",
                 TotalAmount = "15025"
@@ -46,11 +44,11 @@ namespace WSPay.Net.Test
 
             var expected = new FormRequest
             {
-                Url = this.settings.FormRequestUrl,
-                ShopId = this.settings.RegularShop.ShopId,
+                //Url = this.settings.FormRequestUrl,
+                ShopId = RegularShop.ShopId,
                 ShoppingCartID = "testShoppingCartId",
                 Amount = "15,5",
-                Signature = "dc703fac7712bbda560090ef58881734",
+                Signature = "8bb5ec7f987f3cf3ce1e3153cfeab963",
                 CustomerFirstName = customer.FirstName,
                 CustomerSurname = customer.LastName,
                 CustomerEmail = customer.Email,
@@ -74,14 +72,14 @@ namespace WSPay.Net.Test
         [InlineData(AutoServiceType.Void)]
         public void CreateAutoServiceRequest(AutoServiceType? type)
         {
-            var actual = this.modelFactory.CreateAutoServiceRequest(this.settings.RegularShop, "wsPayOrderId", "stan", "approvalCode", 150.50, type);
+            var actual = this.modelFactory.CreateAutoServiceRequest(RegularShop, "wsPayOrderId", "stan", "approvalCode", 150.50, type);
             var expected = new Dictionary<string, string>
             {
                 { "WSPayOrderId", "wsPayOrderId" },
-                { "ShopID", this.settings.RegularShop.ShopId },
+                { "ShopID", RegularShop.ShopId},
                 { "STAN", "stan" },
                 { "Amount", "15050" },
-                { "Signature", "48d23d098442545b9fe75b1150b8420d" },
+                { "Signature", "e722e32c3eb92ad307a91cc4d5791ba8" },
                 { "ApprovalCode", "approvalCode" },
                 { "ReturnURL", "" },
                 { "ReturnErrorURL", "" },
@@ -98,17 +96,14 @@ namespace WSPay.Net.Test
         [Fact]
         public void CreateStatusCheckRequest()
         {
-            var actual = this.modelFactory.CreateStatusCheckRequest(this.settings.RegularShop, "testShoppingCartid");
-            var expected = new Dictionary<string, string>
+            var actual = this.modelFactory.CreateStatusCheckRequest(RegularShop, "testShoppingCartid");
+            var expected = new StatusCheckRequest()
             {
-                {"ServiceType", "StatusCheck"},
-                {"ShopID", this.settings.RegularShop.ShopId},
-                {"ShoppingCartID", "testShoppingCartid"},
-                {"Signature", "5148f1f97444f0ec1857e2cea4cac0c1"},
-                {"ReturnURL", ""},
-                {"ReturnErrorURL", ""},
+                Signature = "aa91668118a78018da84f88f1a6fe341",
+                ShopId= RegularShop.ShopId,
+                ShoppingCartId = "testShoppingCartid"
             };
-
+            
             actual.Should().BeEquivalentTo(expected);
         }
     }

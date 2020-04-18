@@ -7,5 +7,6 @@ namespace WSPay.Net
     {
         Task<ApiResponse> SendAutoServicesRequestAsync(IDictionary<string, string> postData);
         Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request);
+        Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request);
     }
 }
