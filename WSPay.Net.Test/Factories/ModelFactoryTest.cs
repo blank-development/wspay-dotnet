@@ -81,7 +81,7 @@ namespace WSPay.Net.Test
                 { "ShopID", this.settings.RegularShop.ShopId },
                 { "STAN", "stan" },
                 { "Amount", "15050" },
-                { "Signature", "9591e1a405bb1ab7a233b5d23287b976" },
+                { "Signature", "48d23d098442545b9fe75b1150b8420d" },
                 { "ApprovalCode", "approvalCode" },
                 { "ReturnURL", "" },
                 { "ReturnErrorURL", "" },
