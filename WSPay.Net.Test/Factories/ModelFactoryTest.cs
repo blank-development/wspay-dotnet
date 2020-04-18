@@ -31,6 +31,33 @@ namespace WSPay.Net.Test.Factories
 
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData(AutoServiceType.Refund)]
+        [InlineData(AutoServiceType.Void)]
+        public void CreateAutoServiceRequest(AutoServiceType? type)
+        {
+            var actual = this.modelFactory.CreateAutoServiceRequest(this.settings.RegularShop, "testShoppingCartid", "stan", "approvalCode", 150.50, type);
+            var expected = new Dictionary<string, string>
+            {
+                { "WSPayOrderId", "testShoppingCartid" },
+                { "ShopID", this.settings.RegularShop.ShopId },
+                { "STAN", "stan" },
+                { "Amount", "15050" },
+                { "Signature", "9591e1a405bb1ab7a233b5d23287b976" },
+                { "ApprovalCode", "approvalCode" },
+                { "ReturnURL", "" },
+                { "ReturnErrorURL", "" },
+            };
+
+            if (type != null)
+            {
+                expected.Add("ServiceType", type.ToString());
+            }
+            
+            actual.Should().BeEquivalentTo(expected);
+        }
         
         [Fact]
         public void CreateStatusCheckRequest()
