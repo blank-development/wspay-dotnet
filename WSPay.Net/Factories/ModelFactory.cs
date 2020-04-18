@@ -39,7 +39,7 @@
             };
         }
 
-        public FormRequest CreateFormRequest(string shoppingCartId, double price, Customer customer, WSPaymentType paymentType, IReturnUrlProvider returnUrlProvider)
+        public FormRequest CreateFormRequest(string shoppingCartId, double price, Customer customer, PaymentType paymentType, IReturnUrlProvider returnUrlProvider)
         {
             var shop = this.settings.RegularShop;
             

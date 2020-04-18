@@ -1,7 +1,7 @@
-using System;
-
 namespace WSPay.Net.Test
 {
+    using System;
+
     public class TestTimeProvider: ITimeProvider
     {
         public DateTime Get()
