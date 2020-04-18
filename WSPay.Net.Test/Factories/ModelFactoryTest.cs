@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
 
@@ -26,6 +27,23 @@ namespace WSPay.Net.Test.Factories
                 TokenNumber = "token123",
                 Token = "token",
                 TotalAmount = "15025"
+            };
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+        
+        [Fact]
+        public void CreateStatusCheckRequest()
+        {
+            var actual = this.modelFactory.CreateStatusCheckRequest(this.settings.RegularShop, "testShoppingCartid");
+            var expected = new Dictionary<string, string>
+            {
+                {"ServiceType", "StatusCheck"},
+                {"ShopID", this.settings.RegularShop.ShopId},
+                {"ShoppingCartID", "testShoppingCartid"},
+                {"Signature", "5148f1f97444f0ec1857e2cea4cac0c1"},
+                {"ReturnURL", ""},
+                {"ReturnErrorURL", ""},
             };
 
             actual.Should().BeEquivalentTo(expected);
