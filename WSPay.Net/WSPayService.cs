@@ -19,36 +19,31 @@ namespace WSPay.Net
             return this.wsPayClient.ProcessPaymentAsync(request);
         }
 
-        public Task<ApiResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<CompleteTransactionResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = modelFactory.CreateAutoServiceRequest(shop, wsPayOrderId, stan, approvalCode, price);
-            return this.wsPayClient.SendAutoServicesRequestAsync(requestData);
+            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return this.wsPayClient.CompleteTransactionAsync(requestData);
         }
 
-        public Task<ApiResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<CompleteTransactionResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            return SendAutoServicesRequestAsync(shop, wsPayOrderId, stan, approvalCode, price, AutoServiceType.Refund);
+            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return this.wsPayClient.RefundTransactionAsync(requestData);
         }
         
-        public Task<ApiResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<CompleteTransactionResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            return SendAutoServicesRequestAsync(shop, wsPayOrderId, stan, approvalCode, price, AutoServiceType.Void);
+            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return this.wsPayClient.VoidTransactionAsync(requestData);
         }
 
         public Task<StatusCheckResponse> CheckStatusAsync(Shop shop, string shoppingCartId)
         {
             var request = modelFactory.CreateStatusCheckRequest(shop, shoppingCartId);
             return this.wsPayClient.CheckStatusAsync(request);
-        }
-        
-        private Task<ApiResponse> SendAutoServicesRequestAsync(Shop shop, string wsPayOrderId, string stan,
-            string approvalCode, double price, AutoServiceType? type)
-        {
-            var request = modelFactory.CreateAutoServiceRequest(shop, wsPayOrderId, stan, approvalCode, price, type);
-            return this.wsPayClient.SendAutoServicesRequestAsync(request);
         }
     }
 }

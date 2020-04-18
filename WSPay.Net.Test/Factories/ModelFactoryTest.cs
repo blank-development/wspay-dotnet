@@ -1,6 +1,5 @@
 namespace WSPay.Net.Test
 {
-    using System.Collections.Generic;
     using FluentAssertions;
     using Xunit;
     
@@ -62,33 +61,6 @@ namespace WSPay.Net.Test
                 CancelUrl = urlProvider.GetCancelUrl("testShoppingCartId"),
                 ErrorUrl = urlProvider.GetErrorUrl()
             };
-            
-            actual.Should().BeEquivalentTo(expected);
-        }
-        
-        [Theory]
-        [InlineData(null)]
-        [InlineData(AutoServiceType.Refund)]
-        [InlineData(AutoServiceType.Void)]
-        public void CreateAutoServiceRequest(AutoServiceType? type)
-        {
-            var actual = this.modelFactory.CreateAutoServiceRequest(RegularShop, "wsPayOrderId", "stan", "approvalCode", 150.50, type);
-            var expected = new Dictionary<string, string>
-            {
-                { "WSPayOrderId", "wsPayOrderId" },
-                { "ShopID", RegularShop.ShopId},
-                { "STAN", "stan" },
-                { "Amount", "15050" },
-                { "Signature", "e722e32c3eb92ad307a91cc4d5791ba8" },
-                { "ApprovalCode", "approvalCode" },
-                { "ReturnURL", "" },
-                { "ReturnErrorURL", "" },
-            };
-
-            if (type != null)
-            {
-                expected.Add("ServiceType", type.ToString());
-            }
             
             actual.Should().BeEquivalentTo(expected);
         }

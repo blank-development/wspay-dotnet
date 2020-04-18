@@ -1,7 +1,5 @@
 ﻿namespace WSPay.Net
 {
-    using System.Collections.Generic;
-    
     public class ModelFactory: IModelFactory
     {
         private readonly SignatureFactory signatureFactory;
@@ -35,6 +33,24 @@
             };
         }
 
+        public CompleteTransactionRequest CreateCompleteTransactionRequest(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
+        {
+            var formattedPrice = WSPayHelpers.FormatPrice(price);
+            var signature =
+                this.signatureFactory.GenerateTransactionCompletionRequestSignature(shop, wsPayOrderId, stan,
+                    approvalCode, formattedPrice);
+            
+            return new CompleteTransactionRequest
+            {
+                WSPayOrderId = wsPayOrderId,
+                ShopId = shop.ShopId,
+                Amount = formattedPrice,
+                Stan = stan,
+                ApprovalCode = approvalCode,
+                Signature = signature
+            };
+        }
+
         public FormRequest CreateFormRequest(string shoppingCartId, double price, Customer customer, PaymentType paymentType, IReturnUrlProvider returnUrlProvider)
         {
             var shop = WSPayConfiguration.RegularShop;
@@ -63,30 +79,7 @@
                 ErrorUrl = returnUrlProvider.GetErrorUrl()
             };
         }
-
-        public IDictionary<string, string> CreateAutoServiceRequest(Shop shop, string wsPayOrderId, string stan, string approvalCode, double totalPrice, AutoServiceType? serviceType = null)
-        {
-            var formattedPrice = WSPayHelpers.FormatPrice(totalPrice);
-            var request = new Dictionary<string, string>()
-            {
-                { "WSPayOrderId", wsPayOrderId },
-                { "ShopID", shop.ShopId },
-                { "STAN", stan },
-                { "Amount", formattedPrice },
-                { "Signature", this.signatureFactory.GenerateTransactionRequestSignature(shop, wsPayOrderId, stan, approvalCode, formattedPrice) },
-                { "ApprovalCode", approvalCode },
-                { "ReturnURL", "" },
-                { "ReturnErrorURL", "" },
-            };
-
-            if (serviceType != null)
-            {
-                request.Add("ServiceType", serviceType.ToString());
-            }
-
-            return request;
-        }
-
+       
         public StatusCheckRequest CreateStatusCheckRequest(Shop shop, string shoppingCartId)
         {
             var signature = this.signatureFactory.GenerateTransactionStatusCheckSignature(shop, shoppingCartId);

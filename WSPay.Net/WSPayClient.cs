@@ -1,7 +1,6 @@
 ﻿namespace WSPay.Net
 {
     using Newtonsoft.Json;
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -14,23 +13,35 @@
         {
             this.httpClient = httpClient ?? BuildDefaultHttpClient();
             this.httpClient.BaseAddress = WSPayConfiguration.BaseUrl;
-            
-            // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        public async Task<ApiResponse> SendAutoServicesRequestAsync(IDictionary<string, string> postData)
+        public async Task<CompleteTransactionResponse> CompleteTransactionAsync(CompleteTransactionRequest request)
         {
-            var formUrlEncodedData = new FormUrlEncodedContent(postData);
-            var result = await httpClient.PostAsync("WSPayAutoServices.aspx", formUrlEncodedData).ConfigureAwait(false);;
-            var resultContent = await result.Content.ReadAsStringAsync();
+            var requestContent = BuildRequestContent(request);
+            var result = await httpClient.PostAsync("api/services/Completion", requestContent).ConfigureAwait(false);
 
-            var isActionSuccessful = WSPayHelpers.IsActionSuccessful(resultContent);
-
-            return isActionSuccessful
-                ? ApiResponse.CreateSuccess(resultContent)
-                : ApiResponse.CreateError(WSPayHelpers.GetErrorMessageFromResponseString(resultContent));
+            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
         }
+        
+        public async Task<CompleteTransactionResponse> RefundTransactionAsync(CompleteTransactionRequest request)
+        {
+            var requestContent = BuildRequestContent(request);
+            var result = await httpClient.PostAsync("api/services/Refund", requestContent).ConfigureAwait(false);
 
+            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
+        }
+        
+        public async Task<CompleteTransactionResponse> VoidTransactionAsync(CompleteTransactionRequest request)
+        {
+            var requestContent = BuildRequestContent(request);
+            var result = await httpClient.PostAsync("api/services/Void", requestContent).ConfigureAwait(false);
+
+            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
+        }
+        
         public async Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
         {
             var requestContent = BuildRequestContent(request);

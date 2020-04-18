@@ -23,7 +23,7 @@
             }
         }
 
-        public string GenerateTransactionRequestSignature(Shop shop, string wsPayOrderId, string stan, string approvalCode, string formattedPrice)
+        public string GenerateTransactionCompletionRequestSignature(Shop shop, string wsPayOrderId, string stan, string approvalCode, string formattedPrice)
         {
             using (var md5Hash = MD5.Create())
             {
@@ -40,7 +40,7 @@
                 return sBuilder.ToString();
             }
         }
-
+       
         public string GenerateTransactionStatusCheckSignature(Shop shop, string shoppingCartId)
         {
             using (var md5Hash = MD5.Create())
