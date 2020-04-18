@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSPay.Net", "WSPay.Net\WSPay.Net.csproj", "{DC2272C4-93E6-4E0F-AE2A-C042F081D390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSPay.Net.Test", "WSPay.Net.Test\WSPay.Net.Test.csproj", "{B6B5346A-A296-4A24-A65D-8482A825B820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC2272C4-93E6-4E0F-AE2A-C042F081D390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2272C4-93E6-4E0F-AE2A-C042F081D390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2272C4-93E6-4E0F-AE2A-C042F081D390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2272C4-93E6-4E0F-AE2A-C042F081D390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B5346A-A296-4A24-A65D-8482A825B820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B5346A-A296-4A24-A65D-8482A825B820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B5346A-A296-4A24-A65D-8482A825B820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B5346A-A296-4A24-A65D-8482A825B820}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
