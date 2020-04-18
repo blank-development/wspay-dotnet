@@ -1,8 +1,8 @@
 ﻿﻿namespace WSPay.Net
 {
-    public class WSPaymentType
+    public class PaymentType
     {
-        public WSPaymentType(bool isNewTokenRequest, string token, string tokenNumber)
+        public PaymentType(bool isNewTokenRequest, string token, string tokenNumber)
         {
             this.Token = token;
             this.TokenNumber = tokenNumber;
