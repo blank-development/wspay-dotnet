@@ -10,8 +10,8 @@ namespace WSPay.Net.Test
                 AutoUrl = "https://test.wspay.biz/WsPayAuto.asp",
                 AutoServicesUrl = "https://test.wspay.biz/WSPayAutoServices.aspx",
                 ProcessPaymentJsonApiUrl = "https://test.wspay.biz/api/services/ProcessPayment",
-                TokenShop = new Shop("testTokenId", "testTokenSecret"),
-                RegularShop = new Shop("regularTokenId", "regularTokenSecret")
+                TokenShop = new Shop("tokenShopId", "tokenTokenSecret"),
+                RegularShop = new Shop("regularShopId", "regularTokenSecret")
             };
         }
     }
