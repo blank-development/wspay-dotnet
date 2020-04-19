@@ -39,41 +39,5 @@ namespace WSPay.Net.Test
             var actual = WSPayHelpers.FormatAmountForRegularShopForm(15);
             actual.Should().Be("15,00");
         }
-
-        [Fact]
-        public void IsActionSuccessful()
-        {
-            var response = @"
-                <input type=""hidden"" name=""ActionSuccess"" value=""1"">
-                <input type=""hidden"" name=""ActionError"" value=""0"">
-            ";
-            
-            var actual = WSPayHelpers.IsActionSuccessful(response);
-            actual.Should().BeTrue();
-        }
-        
-        [Fact]
-        public void IsActionSuccessful_Error()
-        {
-            var response = @"
-                <input type=""hidden"" name=""ActionSuccess"" value=""0"">
-                <input type=""hidden"" name=""ActionError"" value=""0"">
-            ";
-            
-            var actual = WSPayHelpers.IsActionSuccessful(response);
-            actual.Should().BeFalse();
-        }
-
-        [Fact]
-        public void GetErrorMessageFromResponseString()
-        {
-            var response = @"
-                <input type=""hidden"" name=""ActionSuccess"" value=""0"">
-                <input type=""hidden"" name=""ErrorMessage"" value=""Došlo je do pogreške"">
-            ";
-            
-            var actual = WSPayHelpers.GetErrorMessageFromResponseString(response);
-            actual.Should().Be("Došlo je do pogreške");
-        }
     }
 }
