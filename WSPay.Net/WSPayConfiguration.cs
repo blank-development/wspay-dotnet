@@ -13,9 +13,9 @@ namespace WSPay.Net
         {
             get
             {
-                if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayMode"]))
+                if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayMode"]))
                 {
-                    if (Enum.TryParse<Mode>(ConfigurationManager.AppSettings["WSPayMode"], out var parsedMode))
+                    if (!Enum.TryParse<Mode>(ConfigurationManager.AppSettings["WSPayMode"], out var parsedMode))
                     {
                         throw new ArgumentException("Invalid WSPayMode configured");
                     }
