@@ -4,9 +4,9 @@
     {
         public PaymentType(bool isNewTokenRequest, string token, string tokenNumber)
         {
-            this.Token = token;
-            this.TokenNumber = tokenNumber;
-            this.IsNewTokenRequest = !this.IsPayingWithToken && isNewTokenRequest;
+            Token = token;
+            TokenNumber = tokenNumber;
+            IsNewTokenRequest = !IsPayingWithToken && isNewTokenRequest;
         }
 
         public bool IsNewTokenRequest { get; set; }

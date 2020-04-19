@@ -5,16 +5,16 @@ namespace WSPay.Net.Test
     
     public class ModelFactoryTest: WSPayTestBase
     {
-        private readonly IModelFactory modelFactory;
+        private readonly IRequestFactory modelFactory;
         public ModelFactoryTest()
         {
-            this.modelFactory = new ModelFactory(new SignatureFactory(), new TestTimeProvider());
+            modelFactory = new RequestFactory(new SignatureFactory(), new TestTimeProvider());
         }
         
         [Fact]
         public void CreateProcessPaymentRequest()
         {
-            var actual = this.modelFactory.CreateProcessPaymentRequest("123", 150.25, "token", "token123");
+            var actual = modelFactory.CreateProcessPaymentRequest("123", 150.25, "token", "token123");
             var expected = new ProcessPaymentRequest
             {
                 ShopID = "tokenShopId",
@@ -39,11 +39,11 @@ namespace WSPay.Net.Test
             var customer = CustomerFactory.Create();
             var paymentType = new PaymentType(isNewTokenRequest, token, tokenNumber);
             var urlProvider = new TestUrlProvider();
-            var actual = this.modelFactory.CreateFormRequest("testShoppingCartId", 15.50,  customer, paymentType, urlProvider);
+            var actual = modelFactory.CreateFormRequest("testShoppingCartId", 15.50,  customer, paymentType, urlProvider);
 
             var expected = new FormRequest
             {
-                //Url = this.settings.FormRequestUrl,
+                Url = WSPayConfiguration.FormUrl.ToString(),
                 ShopId = RegularShop.ShopId,
                 ShoppingCartID = "testShoppingCartId",
                 Amount = "15,5",
@@ -68,7 +68,7 @@ namespace WSPay.Net.Test
         [Fact]
         public void CreateStatusCheckRequest()
         {
-            var actual = this.modelFactory.CreateStatusCheckRequest(RegularShop, "testShoppingCartid");
+            var actual = modelFactory.CreateStatusCheckRequest(RegularShop, "testShoppingCartid");
             var expected = new StatusCheckRequest()
             {
                 Signature = "aa91668118a78018da84f88f1a6fe341",

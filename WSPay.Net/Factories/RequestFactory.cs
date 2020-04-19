@@ -1,12 +1,17 @@
 ﻿namespace WSPay.Net
 {
-    public class ModelFactory: IModelFactory
+    public class RequestFactory: IRequestFactory
     {
-        private readonly SignatureFactory signatureFactory;
+        private readonly ISignatureFactory signatureFactory;
         private readonly ITimeProvider timeProvider;
+
+        public RequestFactory()
+            : this(new SignatureFactory(), new TimeProvider())
+        {
+        }
         
-        public ModelFactory(
-            SignatureFactory signatureFactory,
+        public RequestFactory(
+            ISignatureFactory signatureFactory,
             ITimeProvider timeProvider)
         {
             this.signatureFactory = signatureFactory;
@@ -18,8 +23,8 @@
             var shop = WSPayConfiguration.TokenShop;
 
             var formattedPrice = WSPayHelpers.FormatPrice(price);
-            var signature = this.signatureFactory.GenerateFormRequestSignature(WSPayConfiguration.TokenShop, shoppingCartId,
-                formattedPrice);
+            var signature = signatureFactory.GenerateFormRequestSignature(WSPayConfiguration.TokenShop, shoppingCartId,
+                price);
             
             return new ProcessPaymentRequest
             {
@@ -37,8 +42,8 @@
         {
             var formattedPrice = WSPayHelpers.FormatPrice(price);
             var signature =
-                this.signatureFactory.GenerateTransactionCompletionRequestSignature(shop, wsPayOrderId, stan,
-                    approvalCode, formattedPrice);
+                signatureFactory.GenerateTransactionCompletionRequestSignature(shop, wsPayOrderId, stan,
+                    approvalCode, price);
             
             return new CompleteTransactionRequest
             {
@@ -50,21 +55,30 @@
                 Signature = signature
             };
         }
-
+        
+        public StatusCheckRequest CreateStatusCheckRequest(Shop shop, string shoppingCartId)
+        {
+            var signature = signatureFactory.GenerateTransactionStatusCheckSignature(shop, shoppingCartId);
+            return new StatusCheckRequest()
+            {
+                Signature = signature,
+                ShopId= shop.ShopId,
+                ShoppingCartId = shoppingCartId
+            };
+        }
+        
         public FormRequest CreateFormRequest(string shoppingCartId, double price, Customer customer, PaymentType paymentType, IReturnUrlProvider returnUrlProvider)
         {
             var shop = WSPayConfiguration.RegularShop;
-            
             var formattedPriceForRegularForm = WSPayHelpers.FormatAmountForRegularShopForm(price);
-            var formattedPrice = WSPayHelpers.FormatPrice(price);
             
             return new FormRequest
             {
-               // Url = this.settings.FormRequestUrl,
+                Url = WSPayConfiguration.FormUrl.ToString(),
                 ShopId = shop.ShopId,
                 ShoppingCartID = shoppingCartId,
                 Amount = formattedPriceForRegularForm,
-                Signature = this.signatureFactory.GenerateFormRequestSignature(shop, shoppingCartId, formattedPrice),
+                Signature = signatureFactory.GenerateFormRequestSignature(shop, shoppingCartId, price),
                 CustomerFirstName = customer?.FirstName,
                 CustomerSurname = customer?.LastName,
                 CustomerEmail = customer?.Email,
@@ -77,17 +91,6 @@
                 ReturnUrl = returnUrlProvider.GetReturnUrl(),
                 CancelUrl = returnUrlProvider.GetCancelUrl(shoppingCartId),
                 ErrorUrl = returnUrlProvider.GetErrorUrl()
-            };
-        }
-       
-        public StatusCheckRequest CreateStatusCheckRequest(Shop shop, string shoppingCartId)
-        {
-            var signature = this.signatureFactory.GenerateTransactionStatusCheckSignature(shop, shoppingCartId);
-            return new StatusCheckRequest()
-            {
-                Signature = signature,
-                ShopId= shop.ShopId,
-                ShoppingCartId = shoppingCartId
             };
         }
     }

@@ -18,6 +18,6 @@
         public string ECI { get; set; }
         public string Approved { get; set; }
 
-        public bool IsSuccess => this.Approved == "1";
+        public bool IsSuccess => Approved == "1";
     }
 }

@@ -4,46 +4,50 @@ namespace WSPay.Net
 
     public class WSPayService: IWSPayService
     {
-        private readonly IModelFactory modelFactory;
+        private readonly IRequestFactory requestFactory;
         private readonly IWSPayClient wsPayClient;
-        
-        public WSPayService(IModelFactory modelFactory, IWSPayClient wsPayClient)
+
+        public WSPayService(): this(new RequestFactory(), new WSPayApiClient())
         {
-            this.modelFactory = modelFactory;
+        }
+        
+        public WSPayService(IRequestFactory requestFactory, IWSPayClient wsPayClient)
+        {
+            this.requestFactory = requestFactory;
             this.wsPayClient = wsPayClient;
         }
 
         public Task<ProcessPaymentResponse> ProcessPaymentAsync(string shoppingCartId, double price, string token, string tokenNumber)
         {
-            var request = modelFactory.CreateProcessPaymentRequest(shoppingCartId, price, token, tokenNumber);
-            return this.wsPayClient.ProcessPaymentAsync(request);
+            var request = requestFactory.CreateProcessPaymentRequest(shoppingCartId, price, token, tokenNumber);
+            return wsPayClient.ProcessPaymentAsync(request);
         }
 
         public Task<CompleteTransactionResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
-            return this.wsPayClient.CompleteTransactionAsync(requestData);
+            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return wsPayClient.CompleteTransactionAsync(requestData);
         }
 
         public Task<CompleteTransactionResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
-            return this.wsPayClient.RefundTransactionAsync(requestData);
+            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return wsPayClient.RefundTransactionAsync(requestData);
         }
         
         public Task<CompleteTransactionResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = modelFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
-            return this.wsPayClient.VoidTransactionAsync(requestData);
+            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            return wsPayClient.VoidTransactionAsync(requestData);
         }
 
         public Task<StatusCheckResponse> CheckStatusAsync(Shop shop, string shoppingCartId)
         {
-            var request = modelFactory.CreateStatusCheckRequest(shop, shoppingCartId);
-            return this.wsPayClient.CheckStatusAsync(request);
+            var request = requestFactory.CreateStatusCheckRequest(shop, shoppingCartId);
+            return wsPayClient.CheckStatusAsync(request);
         }
     }
 }

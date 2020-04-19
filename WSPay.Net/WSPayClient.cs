@@ -9,10 +9,14 @@
     {
         private readonly HttpClient httpClient;
 
+        public WSPayApiClient() : this(BuildDefaultHttpClient())
+        {
+        }
+        
         public WSPayApiClient(HttpClient httpClient)
         {
-            this.httpClient = httpClient ?? BuildDefaultHttpClient();
-            this.httpClient.BaseAddress = WSPayConfiguration.BaseUrl;
+            this.httpClient = httpClient;
+            this.httpClient.BaseAddress = WSPayConfiguration.BaseApiUrl;
         }
 
         public async Task<CompleteTransactionResponse> CompleteTransactionAsync(CompleteTransactionRequest request)
@@ -59,7 +63,7 @@
             return JsonConvert.DeserializeObject<StatusCheckResponse>(resultContent);
         }
 
-        private HttpClient BuildDefaultHttpClient()
+        private static HttpClient BuildDefaultHttpClient()
         {
             return new HttpClient();
         }

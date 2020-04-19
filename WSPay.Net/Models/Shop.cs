@@ -4,8 +4,8 @@ namespace WSPay.Net
     {
         public Shop(string shopId, string secret)
         {
-            this.ShopId = shopId;
-            this.Secret = secret;
+            ShopId = shopId;
+            Secret = secret;
         }
 
         public string ShopId { get; private set; }

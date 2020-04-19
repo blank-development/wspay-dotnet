@@ -63,7 +63,7 @@ namespace WSPay.Net
             set => regularShop = value;
         }
         
-        public static Uri BaseUrl
+        public static Uri BaseApiUrl
         {
             get
             {
@@ -73,6 +73,23 @@ namespace WSPay.Net
                         return new Uri("https://secure.wspay.biz");
                     case Mode.Test:
                         return new Uri("https://test.wspay.biz");
+                
+                    default:
+                        throw new ArgumentException("Invalid mode");
+                }
+            }
+        }
+        
+        public static Uri FormUrl
+        {
+            get
+            {
+                switch (Mode)
+                {
+                    case Mode.Prod:
+                        return new Uri("https://form.wspay.biz/Authorization.aspx");
+                    case Mode.Test:
+                        return new Uri("https://formtest.wspay.biz/Authorization.aspx");
                 
                     default:
                         throw new ArgumentException("Invalid mode");
