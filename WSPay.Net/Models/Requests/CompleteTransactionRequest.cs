@@ -8,7 +8,7 @@ namespace WSPay.Net
         [JsonProperty("WSPayOrderID")]
         public string WSPayOrderId { get; set; }
         
-        [JsonProperty("ShopCompleteTransactionResponseID")]
+        [JsonProperty("ShopID")]
         public string ShopId { get; set; }
         
         [JsonProperty("ApprovalCode")]
