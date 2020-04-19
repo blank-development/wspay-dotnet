@@ -2,6 +2,7 @@
 {
     public class FormSuccessResponse : FormRequest
     {
+        public string WSPayOrderId { get; set; }
         public string ApprovalCode { get; set; }
         public string Stan { get; set; }
         public string TokenExp { get; set; }

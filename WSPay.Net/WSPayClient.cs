@@ -65,7 +65,7 @@
         private async Task<T> ProcessResponse<T>(HttpResponseMessage response)
         {
             var resultContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 throw new WSPayException(response.StatusCode, resultContent);
             }

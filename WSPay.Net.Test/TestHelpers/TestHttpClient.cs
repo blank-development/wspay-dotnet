@@ -10,7 +10,7 @@ namespace WSPay.Net.Test
     
     public class TestHttpClient
     {
-        private static IWSPayClient CreateSuccessClientWithResponse(string response)
+        public static IWSPayClient CreateSuccessClientWithResponse(string response)
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock

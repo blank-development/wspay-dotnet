@@ -18,7 +18,7 @@
         [JsonProperty("ShopID")]
         public string ShopId { get; set; }
         [JsonProperty("Amount")]
-        public double Amount { get; set; }
+        public string Amount { get; set; }
         [JsonProperty("ActionSuccess")]
         public string ActionSuccess { get;set; }
         [JsonProperty("Success")]
