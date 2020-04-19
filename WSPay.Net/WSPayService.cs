@@ -23,24 +23,24 @@ namespace WSPay.Net
             return wsPayClient.ProcessPaymentAsync(request);
         }
 
-        public Task<CompleteTransactionResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            var requestData = requestFactory.CreateChangeTransactionStatusRequest(shop, wsPayOrderId, stan, approvalCode, price);
             return wsPayClient.CompleteTransactionAsync(requestData);
         }
 
-        public Task<CompleteTransactionResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<ChangeTransactionStatusResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            var requestData = requestFactory.CreateChangeTransactionStatusRequest(shop, wsPayOrderId, stan, approvalCode, price);
             return wsPayClient.RefundTransactionAsync(requestData);
         }
         
-        public Task<CompleteTransactionResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        public Task<ChangeTransactionStatusResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price)
         {
-            var requestData = requestFactory.CreateCompleteTransactionRequest(shop, wsPayOrderId, stan, approvalCode, price);
+            var requestData = requestFactory.CreateChangeTransactionStatusRequest(shop, wsPayOrderId, stan, approvalCode, price);
             return wsPayClient.VoidTransactionAsync(requestData);
         }
 

@@ -19,31 +19,31 @@
             this.httpClient.BaseAddress = WSPayConfiguration.BaseApiUrl;
         }
 
-        public async Task<CompleteTransactionResponse> CompleteTransactionAsync(CompleteTransactionRequest request)
+        public async Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(ChangeTransactionStatusRequest request)
         {
             var requestContent = BuildRequestContent(request);
             var result = await httpClient.PostAsync("api/services/Completion", requestContent).ConfigureAwait(false);
 
             var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
+            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
         }
         
-        public async Task<CompleteTransactionResponse> RefundTransactionAsync(CompleteTransactionRequest request)
+        public async Task<ChangeTransactionStatusResponse> RefundTransactionAsync(ChangeTransactionStatusRequest request)
         {
             var requestContent = BuildRequestContent(request);
             var result = await httpClient.PostAsync("api/services/Refund", requestContent).ConfigureAwait(false);
 
             var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
+            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
         }
         
-        public async Task<CompleteTransactionResponse> VoidTransactionAsync(CompleteTransactionRequest request)
+        public async Task<ChangeTransactionStatusResponse> VoidTransactionAsync(ChangeTransactionStatusRequest request)
         {
             var requestContent = BuildRequestContent(request);
             var result = await httpClient.PostAsync("api/services/Void", requestContent).ConfigureAwait(false);
 
             var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<CompleteTransactionResponse>(resultContent);
+            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
         }
         
         public async Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)

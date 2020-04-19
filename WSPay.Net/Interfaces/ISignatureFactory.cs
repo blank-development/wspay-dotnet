@@ -4,7 +4,7 @@ namespace WSPay.Net
     {
         string GenerateFormRequestSignature(Shop shop, string shoppingCartId, double price);
 
-        string GenerateTransactionCompletionRequestSignature(Shop shop, string wsPayOrderId, string stan,
+        string GenerateChangeTransactionStatusSignature(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price);
 
         string GenerateTransactionStatusCheckSignature(Shop shop, string shoppingCartId);

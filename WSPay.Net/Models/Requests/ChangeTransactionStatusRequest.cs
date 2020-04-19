@@ -3,7 +3,7 @@ namespace WSPay.Net
     using Newtonsoft.Json;
 
     [JsonObject]
-    public class CompleteTransactionResponse
+    public class ChangeTransactionStatusRequest
     {
         [JsonProperty("WSPayOrderID")]
         public string WSPayOrderId { get; set; }
@@ -17,15 +17,10 @@ namespace WSPay.Net
         [JsonProperty("STAN")]
         public string Stan { get; set; }
         
-        [JsonProperty("ErrorMessage")]
-        public string ErrorMessage { get; set; }
+        [JsonProperty("Amount")]
+        public string Amount { get; set; }
         
         [JsonProperty("Signature")]
         public string Signature { get; set; }
-        
-        [JsonProperty("ActionSuccess")]
-        public string ActionSuccess { get; set; }
-
-        public bool IsActionSuccess => ActionSuccess == ActionCodes.Success.ToString("D");
     }
 }

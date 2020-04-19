@@ -5,7 +5,7 @@ namespace WSPay.Net
         ProcessPaymentRequest CreateProcessPaymentRequest(string shoppingCartId, double price, string token,
             string tokenNumber);
 
-        CompleteTransactionRequest CreateCompleteTransactionRequest(Shop shop, string wsPayOrderId, string stan,
+        ChangeTransactionStatusRequest CreateChangeTransactionStatusRequest(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price);
         
         StatusCheckRequest CreateStatusCheckRequest(Shop shop, string shoppingCartId);

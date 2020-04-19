@@ -24,7 +24,7 @@
             }
         }
 
-        public string GenerateTransactionCompletionRequestSignature(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
+        public string GenerateChangeTransactionStatusSignature(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
         {
             var formattedPrice = WSPayHelpers.FormatPrice(price);
 

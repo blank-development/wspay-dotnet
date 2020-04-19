@@ -80,10 +80,10 @@ namespace WSPay.Net.Test
         }
 
         [Fact]
-        public void CreateCompleteTransactionRequest()
+        public void CreateChangeTransactionStatusRequest()
         {
-            var actual = modelFactory.CreateCompleteTransactionRequest(RegularShop, "testShoppingCartid", "stan", "approvalCode", 15.25);
-            var expected = new CompleteTransactionRequest
+            var actual = modelFactory.CreateChangeTransactionStatusRequest(RegularShop, "testShoppingCartid", "stan", "approvalCode", 15.25);
+            var expected = new ChangeTransactionStatusRequest
             {
                 WSPayOrderId = "testShoppingCartid",
                 ShopId = RegularShop.ShopId,

@@ -6,9 +6,8 @@ namespace WSPay.Net
     {
         Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request);
         Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request);
-        Task<CompleteTransactionResponse> VoidTransactionAsync(CompleteTransactionRequest request);
-        Task<CompleteTransactionResponse> RefundTransactionAsync(CompleteTransactionRequest request);
-        Task<CompleteTransactionResponse> CompleteTransactionAsync(CompleteTransactionRequest request);
-
+        Task<ChangeTransactionStatusResponse> VoidTransactionAsync(ChangeTransactionStatusRequest request);
+        Task<ChangeTransactionStatusResponse> RefundTransactionAsync(ChangeTransactionStatusRequest request);
+        Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(ChangeTransactionStatusRequest request);
     }
 }

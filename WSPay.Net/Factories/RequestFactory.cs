@@ -38,14 +38,14 @@
             };
         }
 
-        public CompleteTransactionRequest CreateCompleteTransactionRequest(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
+        public ChangeTransactionStatusRequest CreateChangeTransactionStatusRequest(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
         {
             var formattedPrice = WSPayHelpers.FormatPrice(price);
             var signature =
-                signatureFactory.GenerateTransactionCompletionRequestSignature(shop, wsPayOrderId, stan,
+                signatureFactory.GenerateChangeTransactionStatusSignature(shop, wsPayOrderId, stan,
                     approvalCode, price);
             
-            return new CompleteTransactionRequest
+            return new ChangeTransactionStatusRequest
             {
                 WSPayOrderId = wsPayOrderId,
                 ShopId = shop.ShopId,

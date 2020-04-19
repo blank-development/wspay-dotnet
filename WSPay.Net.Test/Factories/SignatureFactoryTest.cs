@@ -19,9 +19,9 @@ namespace WSPay.Net.Test
         }
         
         [Fact]
-        public void GenerateTransactionCompletionRequestSignature()
+        public void GenerateChangeTransactionStatusSignature()
         {
-            var actual = signatureFactory.GenerateTransactionCompletionRequestSignature(RegularShop, "testCartId", "stan", "approvalCode", 15.25);
+            var actual = signatureFactory.GenerateChangeTransactionStatusSignature(RegularShop, "testCartId", "stan", "approvalCode", 15.25);
             actual.Should().Be("811a70921015b6b95e6541da6d73cf43");
         }
         
