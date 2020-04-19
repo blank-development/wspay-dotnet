@@ -1,8 +1,8 @@
-using System;
-using System.Net;
-
 namespace WSPay.Net
 {
+    using System;
+    using System.Net;
+    
     public class WSPayException : Exception
     {
         public WSPayException(string message)

@@ -7,7 +7,8 @@ namespace WSPay.Net.Test
     using System.Threading.Tasks;
     using Moq;
     using Moq.Protected;
-    
+    using System.Text;
+
     public class TestHttpClient
     {
         public static IWSPayClient CreateSuccessClientWithResponse(string response)
@@ -23,7 +24,7 @@ namespace WSPay.Net.Test
                 .ReturnsAsync(new HttpResponseMessage()
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response),
+                    Content = new StringContent(response, Encoding.UTF8, "application/json"),
                 })
                 .Verifiable();
  
@@ -48,7 +49,7 @@ namespace WSPay.Net.Test
                 .ReturnsAsync(new HttpResponseMessage()
                 {
                     StatusCode = HttpStatusCode.BadRequest,
-                    Content = new StringContent(error),
+                    Content = new StringContent(error, Encoding.UTF8, "application/json"),
                 })
                 .Verifiable();
  

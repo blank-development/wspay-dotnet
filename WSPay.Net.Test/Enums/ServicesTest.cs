@@ -1,8 +1,8 @@
-using FluentAssertions;
-using Xunit;
-
 namespace WSPay.Net.Test.Enums
 {
+    using FluentAssertions;
+    using Xunit;
+    
     public class ServicesTest
     {
         [Fact]

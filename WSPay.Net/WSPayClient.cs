@@ -19,47 +19,26 @@
             this.httpClient.BaseAddress = WSPayConfiguration.BaseApiUrl;
         }
 
-        public Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
-        {
-            return RequestAsync<ProcessPaymentRequest, ProcessPaymentResponse>(request, Services.ProcessPayment);
-        }
-
-        public Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request)
-        {
-            return RequestAsync<StatusCheckRequest, StatusCheckResponse>(request, Services.StatusCheck);
-        }
-        
-        public Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(ChangeTransactionStatusRequest request)
-        {
-            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Completion);
-        }
-        
-        public Task<ChangeTransactionStatusResponse> RefundTransactionAsync(ChangeTransactionStatusRequest request)
-        {
-            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Refund);
-        }
-        
-        public Task<ChangeTransactionStatusResponse> VoidTransactionAsync(ChangeTransactionStatusRequest request)
-        {
-            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Void);
-        }
-
-        private static HttpClient BuildDefaultHttpClient()
-        {
-            return new HttpClient();
-        }
-
-        private StringContent BuildRequestContent<T>(T request)
-        {
-            return new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-        }
-
-        private async Task<TRes> RequestAsync<TReq, TRes>(TReq request, string service) 
+        public async Task<TRes> RequestAsync<TReq, TRes>(TReq request, string service) 
+            where TReq: class
+            where TRes: class
         {
             var requestContent = BuildRequestContent(request);
             var response = await httpClient.PostAsync($"api/service/{service}", requestContent).ConfigureAwait(false);
             var result = await ProcessResponse<TRes>(response);
             return result;
+        }
+        
+        public TRes Request<TReq, TRes>(TReq request, string service)
+            where TReq: class
+            where TRes: class
+        {
+            return RequestAsync<TReq, TRes>(request, service).WaitTask();
+        }
+        
+        private StringContent BuildRequestContent<T>(T request)
+        {
+            return new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
         }
         
         private async Task<T> ProcessResponse<T>(HttpResponseMessage response)
@@ -71,6 +50,11 @@
             }
 
             return JsonConvert.DeserializeObject<T>(resultContent);
+        }
+        
+        private static HttpClient BuildDefaultHttpClient()
+        {
+            return new HttpClient();
         }
     }
 }

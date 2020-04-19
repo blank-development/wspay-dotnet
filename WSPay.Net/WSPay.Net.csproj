@@ -4,11 +4,12 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Title>Client </Title>
         <Authors>Dobartek</Authors>
-        <Description>WSPay.Net is an async client for WSPay API.</Description>
+        <Description>WSPay.Net is an async/sync client for WSPay API.</Description>
         <PackageProjectUrl>https://github.com/Dobartek/wspay-dotnet</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Dobartek/wspay-dotnet</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>1.0.4</PackageVersion>
+        <PackageVersion>1.0.5</PackageVersion>
+        <PackageTags>wspay</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

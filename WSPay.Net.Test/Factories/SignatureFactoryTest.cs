@@ -1,8 +1,8 @@
-using FluentAssertions;
-using Xunit;
-
 namespace WSPay.Net.Test
 {
+    using FluentAssertions;
+    using Xunit;
+    
     public class SignatureFactoryTest: WSPayTestBase
     {
         private readonly ISignatureFactory signatureFactory;

@@ -1,171 +1,61 @@
+using FluentAssertions;
+using Newtonsoft.Json;
+
 namespace WSPay.Net.Test
 {
-    using FluentAssertions;
-    using Newtonsoft.Json;
     using Xunit;
-    
+
     public class WSPayClientTest
     {
-        [Fact]
-        public void ProcessPaymentAsync()
+        class TestRequest
         {
-            var response = new ProcessPaymentResponse()
-            {
-                Approved = "1",
-                Eci = "12f",
-                Signature = "asdokasokdas",
-                Stan = "Stan",
-                Token = "Token",
-                ApprovalCode = "123",
-                DateTime = "1212",
-                ErrorMessage = null,
-                PaymentType = "123",
-                ShopId = "REGULAR",
-                TokenNumber = "asd",
-                TotalAmount = "122",
-                ShoppingCartId = "cartId",
-                WSPayOrderId = "orderId"
-            };
-            
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
-            var result = client.ProcessPaymentAsync(new ProcessPaymentRequest()).Result;
-
-            result.Should().BeEquivalentTo(response);
+            public int Id { get; set; } = 1;
+        }
+        
+        class TestResponse
+        {
+            public int Id { get; set; } = 1;
         }
         
         [Fact]
-        public void ProcessPaymentAsync_Error()
+        public void RequestAsync()
+        {
+            var response = new TestResponse();
+            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
+            
+            var asyncResult = client.RequestAsync<TestRequest, TestResponse>(new TestRequest(), "test").WaitTask();
+            asyncResult.Should().BeEquivalentTo(response);
+        }
+        
+         
+        [Fact]
+        public void RequestAsync_Error()
         {
             var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
-
-            Assert.Throws<WSPayException>(() =>
-                client.ProcessPaymentAsync(new ProcessPaymentRequest()).WaitTask());
-        }
-        
-        [Fact]
-        public void CheckStatusAsync()
-        {
-            var response = new StatusCheckResponse()
-            {
-                Amount = "12",
-                Completed = "1",
-                Partner = "Part",
-                Refunded = "0",
-                Signature = "asdsad",
-                Stan = "stan",
-                Success = "1",
-                Voided = "0",
-                ActionSuccess = "1",
-                ApprovalCode = "code",
-                ErrorMessage = "",
-                PaymentPlan = "PLAN",
-                PaymentType = "123",
-                ShopId = "REGULAR",
-                TokenNumber = "asd",
-                CreditCardName = "AMEX",
-                WSPayOrderId = "orderId"
-            };
             
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
-            var result = client.CheckStatusAsync(new StatusCheckRequest()).Result;
-
-            result.Should().BeEquivalentTo(response);
+            var exception = Assert.Throws<WSPayException>(() => client.RequestAsync<TestRequest, TestResponse>(new TestRequest(), "test").WaitTask());
+            exception.Message.Should().Be("Doslo je do pogreske");
+            exception.HttpStatusCode.Should().Be(400);
         }
         
         [Fact]
-        public void CheckStatusAsync_Error()
+        public void Request()
+        {
+            var response = new TestResponse();
+            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
+            
+            var syncResult = client.Request<TestRequest, TestResponse>(new TestRequest(), "test");
+            syncResult.Should().BeEquivalentTo(response);
+        }
+        
+        [Fact]
+        public void Request_Error()
         {
             var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
-
-            Assert.Throws<WSPayException>(() =>
-                client.CheckStatusAsync(new StatusCheckRequest()).WaitTask());
-        }
-        
-        [Fact]
-        public void RefundTransactionAsync()
-        {
-            var response = new ChangeTransactionStatusResponse()
-            {
-                Signature = "asdf",
-                Stan = "STAN",
-                ActionSuccess = "1",
-                ApprovalCode = "code",
-                ErrorMessage = "",
-                ShopId = "REGULAR",
-                WSPayOrderId = "orderId"
-            };
             
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
-            var result = client.RefundTransactionAsync(new ChangeTransactionStatusRequest()).Result;
-
-            result.Should().BeEquivalentTo(response);
-        }
-        
-        [Fact]
-        public void RefundTransactionAsync_Error()
-        {
-            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
-
-            Assert.Throws<WSPayException>(() =>
-                client.RefundTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
-        }
-        
-        [Fact]
-        public void VoidTransactionAsync()
-        {
-            var response = new ChangeTransactionStatusResponse()
-            {
-                Signature = "asdf",
-                Stan = "STAN2",
-                ActionSuccess = "1",
-                ApprovalCode = "code",
-                ErrorMessage = "",
-                ShopId = "REGULAR",
-                WSPayOrderId = "orderId"
-            };
-            
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
-            var result = client.VoidTransactionAsync(new ChangeTransactionStatusRequest()).Result;
-
-            result.Should().BeEquivalentTo(response);
-        }
-        
-        [Fact]
-        public void VoidTransactionAsync_Error()
-        {
-            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
-
-            Assert.Throws<WSPayException>(() =>
-                client.VoidTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
-        }
-        
-        [Fact]
-        public void CompleteTransactionAsync()
-        {
-            var response = new ChangeTransactionStatusResponse()
-            {
-                Signature = "asdf",
-                Stan = "STAN3",
-                ActionSuccess = "1",
-                ApprovalCode = "code",
-                ErrorMessage = "",
-                ShopId = "REGULAR",
-                WSPayOrderId = "orderId"
-            };
-            
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
-            var result = client.CompleteTransactionAsync(new ChangeTransactionStatusRequest()).Result;
-
-            result.Should().BeEquivalentTo(response);
-        }
-        
-        [Fact]
-        public void CompleteTransactionAsync_Error()
-        {
-            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
-
-            Assert.Throws<WSPayException>(() =>
-                client.CompleteTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
+            var exception = Assert.Throws<WSPayException>(() => client.Request<TestRequest, TestResponse>(new TestRequest(), "test"));
+            exception.Message.Should().Be("Doslo je do pogreske");
+            exception.HttpStatusCode.Should().Be(400);
         }
     }
 }

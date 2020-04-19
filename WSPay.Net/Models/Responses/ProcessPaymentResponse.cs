@@ -1,7 +1,7 @@
-﻿﻿using Newtonsoft.Json;
-
- namespace WSPay.Net
+﻿namespace WSPay.Net
 {
+    using Newtonsoft.Json;
+
     public class ProcessPaymentResponse : ProcessPaymentRequest
     {
         [JsonProperty("WSPayOrderId")]

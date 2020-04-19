@@ -1,5 +1,6 @@
 namespace WSPay.Net
 {
+    using System.Threading.Tasks;
     using System;
     using System.Globalization;
     
@@ -18,6 +19,13 @@ namespace WSPay.Net
                 ? $"{decimal.Truncate(rounded)},00"
                 : rounded.ToString(CultureInfo.InvariantCulture)
                     .Replace('.', ',');
+        }
+
+        public static TResult WaitTask<TResult>(this Task<TResult> task)
+        {
+            return task.ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }
