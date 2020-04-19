@@ -34,8 +34,8 @@ namespace WSPay.Net
             get
             {
                 if (tokenShop == null 
-                    && string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayTokenShopId"])
-                    && string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayTokenShopSecret"]))
+                    && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayTokenShopId"])
+                    && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayTokenShopSecret"]))
                 {
                     tokenShop = new Shop(ConfigurationManager.AppSettings["WSPayTokenShopId"], ConfigurationManager.AppSettings["WSPayTokenShopSecret"]);
                 }
@@ -50,10 +50,14 @@ namespace WSPay.Net
         {
             get
             {
-                if (regularShop == null 
-                    && string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayRegularShopId"])
-                    && string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayRegularShopSecret"]))
+                if (regularShop == null)
                 {
+                    if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayRegularShopId"]) || string.IsNullOrEmpty(ConfigurationManager.AppSettings["WSPayRegularShopSecret"]))
+                    {
+                        var message = "Invalid configuration. WSPay Regular shop must be configured. WSPayRegularShopId or WSPayRegularShopSecret missing";
+                        throw new WSPayException(message);
+                    }
+                    
                     regularShop = new Shop(ConfigurationManager.AppSettings["WSPayRegularShopId"], ConfigurationManager.AppSettings["WSPayRegularShopSecret"]);
                 }
 

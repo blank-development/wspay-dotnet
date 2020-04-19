@@ -78,5 +78,22 @@ namespace WSPay.Net.Test
             
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Fact]
+        public void CreateCompleteTransactionRequest()
+        {
+            var actual = modelFactory.CreateCompleteTransactionRequest(RegularShop, "testShoppingCartid", "stan", "approvalCode", 15.25);
+            var expected = new CompleteTransactionRequest
+            {
+                WSPayOrderId = "testShoppingCartid",
+                ShopId = RegularShop.ShopId,
+                Amount = "1525",
+                Stan = "stan",
+                ApprovalCode = "approvalCode",
+                Signature = "8c56fab77dcba8edca85cc5feb618a03"
+            };
+            
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }
