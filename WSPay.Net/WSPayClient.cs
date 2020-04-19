@@ -1,44 +1,60 @@
 ﻿namespace WSPay.Net
 {
     using Newtonsoft.Json;
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
     
     public class WSPayApiClient: IWSPayClient
     {
-        private readonly Settings settings;
         private readonly HttpClient httpClient;
 
-        public WSPayApiClient(Settings settings, HttpClient httpClient)
+        public WSPayApiClient() : this(BuildDefaultHttpClient())
         {
-            this.settings = settings;
+        }
+        
+        public WSPayApiClient(HttpClient httpClient)
+        {
             this.httpClient = httpClient;
-
-            // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            this.httpClient.BaseAddress = WSPayConfiguration.BaseApiUrl;
         }
 
-        public async Task<ApiResponse> SendAutoServicesRequestAsync(IDictionary<string, string> postData)
+        public async Task<TRes> RequestAsync<TReq, TRes>(TReq request, string service) 
+            where TReq: class
+            where TRes: class
         {
-            var formUrlEncodedData = new FormUrlEncodedContent(postData);
-            var result = await httpClient.PostAsync(this.settings.AutoServicesUrl, formUrlEncodedData).ConfigureAwait(false);;
-            var resultContent = await result.Content.ReadAsStringAsync();
-
-            var isActionSuccessful = WSPayHelpers.IsActionSuccessful(resultContent);
-
-            return isActionSuccessful
-                ? ApiResponse.CreateSuccess(resultContent)
-                : ApiResponse.CreateError(WSPayHelpers.GetErrorMessageFromResponseString(resultContent));
+            var requestContent = BuildRequestContent(request);
+            var response = await httpClient.PostAsync($"api/service/{service}", requestContent).ConfigureAwait(false);
+            var result = await ProcessResponse<TRes>(response);
+            return result;
         }
-
-        public async Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
+        
+        public TRes Request<TReq, TRes>(TReq request, string service)
+            where TReq: class
+            where TRes: class
         {
-            var requestContent =  new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-            var result = await httpClient.PostAsync(this.settings.ProcessPaymentJsonApiUrl, requestContent).ConfigureAwait(false);
+            return RequestAsync<TReq, TRes>(request, service).WaitTask();
+        }
+        
+        private StringContent BuildRequestContent<T>(T request)
+        {
+            return new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+        }
+        
+        private async Task<T> ProcessResponse<T>(HttpResponseMessage response)
+        {
+            var resultContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new WSPayException(response.StatusCode, resultContent);
+            }
 
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<ProcessPaymentResponse>(resultContent);
+            return JsonConvert.DeserializeObject<T>(resultContent);
+        }
+        
+        private static HttpClient BuildDefaultHttpClient()
+        {
+            return new HttpClient();
         }
     }
 }

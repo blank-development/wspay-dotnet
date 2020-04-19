@@ -1,4 +1,3 @@
-
 namespace WSPay.Net
 {
     using System.Threading.Tasks;
@@ -8,15 +7,28 @@ namespace WSPay.Net
         Task<ProcessPaymentResponse> ProcessPaymentAsync(string shoppingCartId, double price, string token,
             string tokenNumber);
 
-        Task<ApiResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        ProcessPaymentResponse ProcessPayment(string shoppingCartId, double price, string token, string tokenNumber);
+        
+        Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price);
 
-        Task<ApiResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        ChangeTransactionStatusResponse CompleteTransaction(Shop shop, string wsPayOrderId, string stan,
+            string approvalCode, double price);
+        
+        Task<ChangeTransactionStatusResponse> RefundTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price);
 
-        Task<ApiResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
+        ChangeTransactionStatusResponse RefundTransaction(Shop shop, string wsPayOrderId, string stan,
+            string approvalCode, double price);
+        
+        Task<ChangeTransactionStatusResponse> VoidTransactionAsync(Shop shop, string wsPayOrderId, string stan,
             string approvalCode, double price);
 
+        ChangeTransactionStatusResponse VoidTransaction(Shop shop, string wsPayOrderId, string stan,
+            string approvalCode, double price);
+        
         Task<StatusCheckResponse> CheckStatusAsync(Shop shop, string shoppingCartId);
+        
+        StatusCheckResponse CheckStatus(Shop shop, string shoppingCartId);
     }
 }
