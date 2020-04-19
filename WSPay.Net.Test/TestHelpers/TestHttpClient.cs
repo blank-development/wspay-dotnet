@@ -34,5 +34,30 @@ namespace WSPay.Net.Test
 
             return new WSPayApiClient(httpClient);
         }
+        
+        public static IWSPayClient CreateErrorClientWithResponse(string error)
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent(error),
+                })
+                .Verifiable();
+ 
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://test.com/"),
+            };
+
+            return new WSPayApiClient(httpClient);
+        }
     }
 }

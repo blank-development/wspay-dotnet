@@ -34,6 +34,15 @@ namespace WSPay.Net.Test
         }
         
         [Fact]
+        public void ProcessPaymentAsync_Error()
+        {
+            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
+
+            Assert.Throws<WSPayException>(() =>
+                client.ProcessPaymentAsync(new ProcessPaymentRequest()).WaitTask());
+        }
+        
+        [Fact]
         public void CheckStatusAsync()
         {
             var response = new StatusCheckResponse()
@@ -64,6 +73,15 @@ namespace WSPay.Net.Test
         }
         
         [Fact]
+        public void CheckStatusAsync_Error()
+        {
+            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
+
+            Assert.Throws<WSPayException>(() =>
+                client.CheckStatusAsync(new StatusCheckRequest()).WaitTask());
+        }
+        
+        [Fact]
         public void RefundTransactionAsync()
         {
             var response = new ChangeTransactionStatusResponse()
@@ -81,6 +99,15 @@ namespace WSPay.Net.Test
             var result = client.RefundTransactionAsync(new ChangeTransactionStatusRequest()).Result;
 
             result.Should().BeEquivalentTo(response);
+        }
+        
+        [Fact]
+        public void RefundTransactionAsync_Error()
+        {
+            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
+
+            Assert.Throws<WSPayException>(() =>
+                client.RefundTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
         }
         
         [Fact]
@@ -104,6 +131,15 @@ namespace WSPay.Net.Test
         }
         
         [Fact]
+        public void VoidTransactionAsync_Error()
+        {
+            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
+
+            Assert.Throws<WSPayException>(() =>
+                client.VoidTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
+        }
+        
+        [Fact]
         public void CompleteTransactionAsync()
         {
             var response = new ChangeTransactionStatusResponse()
@@ -121,6 +157,15 @@ namespace WSPay.Net.Test
             var result = client.CompleteTransactionAsync(new ChangeTransactionStatusRequest()).Result;
 
             result.Should().BeEquivalentTo(response);
+        }
+        
+        [Fact]
+        public void CompleteTransactionAsync_Error()
+        {
+            var client = TestHttpClient.CreateErrorClientWithResponse("Doslo je do pogreske");
+
+            Assert.Throws<WSPayException>(() =>
+                client.CompleteTransactionAsync(new ChangeTransactionStatusRequest()).WaitTask());
         }
     }
 }
