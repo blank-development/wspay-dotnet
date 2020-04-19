@@ -19,48 +19,29 @@
             this.httpClient.BaseAddress = WSPayConfiguration.BaseApiUrl;
         }
 
-        public async Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(ChangeTransactionStatusRequest request)
+        public Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
         {
-            var requestContent = BuildRequestContent(request);
-            var result = await httpClient.PostAsync("api/services/Completion", requestContent).ConfigureAwait(false);
+            return RequestAsync<ProcessPaymentRequest, ProcessPaymentResponse>(request, Services.ProcessPayment);
+        }
 
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
+        public Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request)
+        {
+            return RequestAsync<StatusCheckRequest, StatusCheckResponse>(request, Services.StatusCheck);
         }
         
-        public async Task<ChangeTransactionStatusResponse> RefundTransactionAsync(ChangeTransactionStatusRequest request)
+        public Task<ChangeTransactionStatusResponse> CompleteTransactionAsync(ChangeTransactionStatusRequest request)
         {
-            var requestContent = BuildRequestContent(request);
-            var result = await httpClient.PostAsync("api/services/Refund", requestContent).ConfigureAwait(false);
-
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
+            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Completion);
         }
         
-        public async Task<ChangeTransactionStatusResponse> VoidTransactionAsync(ChangeTransactionStatusRequest request)
+        public Task<ChangeTransactionStatusResponse> RefundTransactionAsync(ChangeTransactionStatusRequest request)
         {
-            var requestContent = BuildRequestContent(request);
-            var result = await httpClient.PostAsync("api/services/Void", requestContent).ConfigureAwait(false);
-
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<ChangeTransactionStatusResponse>(resultContent);
+            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Refund);
         }
         
-        public async Task<ProcessPaymentResponse> ProcessPaymentAsync(ProcessPaymentRequest request)
+        public Task<ChangeTransactionStatusResponse> VoidTransactionAsync(ChangeTransactionStatusRequest request)
         {
-            var requestContent = BuildRequestContent(request);
-            var result = await httpClient.PostAsync("api/services/ProcessPayment", requestContent).ConfigureAwait(false);
-
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<ProcessPaymentResponse>(resultContent);
-        }
-
-        public async Task<StatusCheckResponse> CheckStatusAsync(StatusCheckRequest request)
-        {
-            var requestContent = BuildRequestContent(request);
-            var result = await httpClient.PostAsync("api/services/StatusCheck", requestContent).ConfigureAwait(false);
-            var resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<StatusCheckResponse>(resultContent);
+            return RequestAsync<ChangeTransactionStatusRequest, ChangeTransactionStatusResponse>(request, Services.Void);
         }
 
         private static HttpClient BuildDefaultHttpClient()
@@ -71,6 +52,25 @@
         private StringContent BuildRequestContent<T>(T request)
         {
             return new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+        }
+
+        private async Task<TRes> RequestAsync<TReq, TRes>(TReq request, string service) 
+        {
+            var requestContent = BuildRequestContent(request);
+            var response = await httpClient.PostAsync($"api/service/{service}", requestContent).ConfigureAwait(false);
+            var result = await ProcessResponse<TRes>(response);
+            return result;
+        }
+        
+        private async Task<T> ProcessResponse<T>(HttpResponseMessage response)
+        {
+            var resultContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                throw new WSPayException(response.StatusCode, resultContent);
+            }
+
+            return JsonConvert.DeserializeObject<T>(resultContent);
         }
     }
 }

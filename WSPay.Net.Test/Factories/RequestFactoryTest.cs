@@ -17,8 +17,8 @@ namespace WSPay.Net.Test
             var actual = modelFactory.CreateProcessPaymentRequest("123", 150.25, "token", "token123");
             var expected = new ProcessPaymentRequest
             {
-                ShopID = "tokenShopId",
-                ShoppingCartID = "123",
+                ShopId = "tokenShopId",
+                ShoppingCartId = "123",
                 DateTime = "20200401152030",
                 Signature = "a7e5f92c6238781650a12b4632a22381",
                 TokenNumber = "token123",

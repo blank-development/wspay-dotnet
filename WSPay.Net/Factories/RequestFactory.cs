@@ -28,8 +28,8 @@
             
             return new ProcessPaymentRequest
             {
-                ShopID =  shop.ShopId,
-                ShoppingCartID = shoppingCartId,
+                ShopId =  shop.ShopId,
+                ShoppingCartId = shoppingCartId,
                 TotalAmount = formattedPrice,
                 Signature = signature,
                 Token = token,
