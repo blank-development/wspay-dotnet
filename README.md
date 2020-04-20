@@ -45,8 +45,12 @@ WSPayConfiguration.TokenShop = new Shop("tokenShopId", "tokenShopSecret");
 ```
 
 ## Usage
+```csharp
+var service = new WSPayService();
+var status = await service.CheckStatusAsync(WSPayConfiguration.RegularShop, "myShoppingCartId");
+```
 
-### With dependency injection
+### Register services for DI
 ```csharp
 // Autofac
 public void RegisterWsPayServices(ContainerBuilder builder)
