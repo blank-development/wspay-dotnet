@@ -8,8 +8,10 @@
         <PackageProjectUrl>https://github.com/Dobartek/wspay-dotnet</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Dobartek/wspay-dotnet</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>1.0.6</PackageVersion>
+        <PackageVersion>1.0.7</PackageVersion>
         <PackageTags>wspay</PackageTags>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/Dobartek/wspay-dotnet/master/LICENSE.md</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
