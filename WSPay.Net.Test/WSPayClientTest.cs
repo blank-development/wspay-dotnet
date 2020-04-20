@@ -21,7 +21,7 @@ namespace WSPay.Net.Test
         public void RequestAsync()
         {
             var response = new TestResponse();
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
+            var client = TestHttpClient.CreateSuccessClientWithResponse("api/services/test", JsonConvert.SerializeObject(response));
             
             var asyncResult = client.RequestAsync<TestRequest, TestResponse>(new TestRequest(), "test").WaitTask();
             asyncResult.Should().BeEquivalentTo(response);
@@ -42,7 +42,7 @@ namespace WSPay.Net.Test
         public void Request()
         {
             var response = new TestResponse();
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
+            var client = TestHttpClient.CreateSuccessClientWithResponse("api/services/test", JsonConvert.SerializeObject(response));
             
             var syncResult = client.Request<TestRequest, TestResponse>(new TestRequest(), "test");
             syncResult.Should().BeEquivalentTo(response);

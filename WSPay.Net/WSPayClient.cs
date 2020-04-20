@@ -24,7 +24,7 @@
             where TRes: class
         {
             var requestContent = BuildRequestContent(request);
-            var response = await httpClient.PostAsync($"api/service/{service}", requestContent).ConfigureAwait(false);
+            var response = await httpClient.PostAsync($"api/services/{service}", requestContent).ConfigureAwait(false);
             var result = await ProcessResponse<TRes>(response);
             return result;
         }

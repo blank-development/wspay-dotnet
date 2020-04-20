@@ -1,3 +1,5 @@
+using RichardSzalay.MockHttp;
+
 namespace WSPay.Net.Test
 {
     using Newtonsoft.Json;
@@ -27,7 +29,7 @@ namespace WSPay.Net.Test
                 WSPayOrderId = "orderId"
             };
             
-            var service = BuildServiceWithSuccessResponse(response);
+            var service = BuildServiceWithSuccessResponse("api/services/ProcessPayment", response);
             
             var asyncResult = service.ProcessPaymentAsync("cartId", 15.50, "token", "tokenNumer").WaitTask();
             asyncResult.Should().BeEquivalentTo(response);
@@ -72,7 +74,7 @@ namespace WSPay.Net.Test
                 WSPayOrderId = "orderId"
             };
             
-            var service = BuildServiceWithSuccessResponse(response);
+            var service = BuildServiceWithSuccessResponse("api/services/StatusCheck", response);
             
             var asyncResult = service.CheckStatusAsync(RegularShop, "shoppingCartId").WaitTask();
             asyncResult.Should().BeEquivalentTo(response);
@@ -107,7 +109,7 @@ namespace WSPay.Net.Test
                 WSPayOrderId = "orderId"
             };
             
-            var service = BuildServiceWithSuccessResponse(response);
+            var service = BuildServiceWithSuccessResponse("api/services/Refund", response);
             
             var asyncResult = service.RefundTransactionAsync(RegularShop, "wsPayOrderId", "stan", "approvalCode", 15.50)
                 .WaitTask();
@@ -143,7 +145,7 @@ namespace WSPay.Net.Test
                 WSPayOrderId = "orderId"
             };
             
-            var service = BuildServiceWithSuccessResponse(response);
+            var service = BuildServiceWithSuccessResponse("api/services/Void", response);
             
             var asyncResult = service.VoidTransactionAsync(RegularShop, "wsPayOrderId", "stan", "approvalCode", 15.50)
                 .WaitTask();
@@ -179,7 +181,7 @@ namespace WSPay.Net.Test
                 WSPayOrderId = "orderId"
             };
             
-            var service = BuildServiceWithSuccessResponse(response);
+            var service = BuildServiceWithSuccessResponse("api/services/Completion", response);
             
             var asyncResult = service.CompleteTransactionAsync(RegularShop, "wsPayOrderId", "stan", "approvalCode", 15.50)
                 .WaitTask();
@@ -201,9 +203,9 @@ namespace WSPay.Net.Test
                 service.CompleteTransaction(RegularShop, "wsPayOrderId", "stan", "approvalCode", 15.50));
         }
 
-        private IWSPayService BuildServiceWithSuccessResponse<T>(T response) where T: class
+        private IWSPayService BuildServiceWithSuccessResponse<T>(string url, T response) where T: class
         {
-            var client = TestHttpClient.CreateSuccessClientWithResponse(JsonConvert.SerializeObject(response));
+            var client = TestHttpClient.CreateSuccessClientWithResponse(url, JsonConvert.SerializeObject(response));
             return new WSPayService(new RequestFactory(), client);
         }
         
