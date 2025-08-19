@@ -62,8 +62,9 @@
             return new StatusCheckRequest()
             {
                 Signature = signature,
-                ShopId= shop.ShopId,
-                ShoppingCartId = shoppingCartId
+                ShopId = shop.ShopId,
+                ShoppingCartId = shoppingCartId,
+                Version = "2.0"
             };
         }
         

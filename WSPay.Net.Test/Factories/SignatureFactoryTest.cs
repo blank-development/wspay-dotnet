@@ -29,7 +29,7 @@ namespace WSPay.Net.Test
         public void GenerateTransactionStatusCheckSignature()
         {
             var actual = signatureFactory.GenerateTransactionStatusCheckSignature(RegularShop, "testCartId");
-            actual.Should().Be("7ba0869877d3bf902f2973bd84428f9a");
+            actual.Should().Be("9ea4962173b9cbbddceb7e54311a92127df62c6c5e04be3e10014bf8dd3bf954588f701fa7fffcc432cc81c402be799c88f68ddcca0baebbd466e07df7aacb4d");
         }
     }
 }

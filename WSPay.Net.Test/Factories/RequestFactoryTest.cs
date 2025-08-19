@@ -72,9 +72,10 @@ namespace WSPay.Net.Test
             var actual = modelFactory.CreateStatusCheckRequest(RegularShop, "testShoppingCartid");
             var expected = new StatusCheckRequest()
             {
-                Signature = "aa91668118a78018da84f88f1a6fe341",
+                Signature = "7756f016b34d15aaa321f9338d947800ba1f91d268776337490b1fac906cd418a19b8e251d876c26524239f59e772502b945c0e25b06e8a73a3a3cf7656718a0",
                 ShopId= RegularShop.ShopId,
-                ShoppingCartId = "testShoppingCartid"
+                ShoppingCartId = "testShoppingCartid",
+                Version = "2.0"
             };
             
             actual.Should().BeEquivalentTo(expected);
