@@ -3,10 +3,10 @@ namespace WSPay.Net.Test
     using FluentAssertions;
     using Xunit;
     
-    public class ModelFactoryTest: WSPayTestBase
+    public class RequestFactoryTest : WSPayTestBase
     {
         private readonly IRequestFactory modelFactory;
-        public ModelFactoryTest()
+        public RequestFactoryTest()
         {
             modelFactory = new RequestFactory(new SignatureFactory(), new TestTimeProvider());
         }
@@ -20,10 +20,11 @@ namespace WSPay.Net.Test
                 ShopId = "tokenShopId",
                 ShoppingCartId = "123",
                 DateTime = "20200401152030",
-                Signature = "a7e5f92c6238781650a12b4632a22381",
+                Signature = "b6dcfe6c4deed0a7f5078b8d1091c8daff3182f7d766cb25040b508a49d27bdf7e2085b87e335a8a5aa2a20aca968565b101cd2454f18101f656f92f6baf0834",
                 TokenNumber = "token123",
                 Token = "token",
-                TotalAmount = "15025"
+                TotalAmount = "15025",
+                Version = "2.0"
             };
 
             actual.Should().BeEquivalentTo(expected);
@@ -47,7 +48,7 @@ namespace WSPay.Net.Test
                 ShopId = RegularShop.ShopId,
                 ShoppingCartID = "testShoppingCartId",
                 Amount = "15,5",
-                Signature = "8bb5ec7f987f3cf3ce1e3153cfeab963",
+                Signature = "ee06d42e8589d2454b29c91c3ac8587f3c70699cca0f008c5405d3aab3b7f0510d78d17b73d6f8fe2becee865941bd32e6b9f7d5c537f977c97fef276b055844",
                 CustomerFirstName = customer.FirstName,
                 CustomerSurname = customer.LastName,
                 CustomerEmail = customer.Email,
@@ -59,7 +60,8 @@ namespace WSPay.Net.Test
                 FormattedDateTime = "20200401152030",
                 ReturnUrl = urlProvider.GetReturnUrl(),
                 CancelUrl = urlProvider.GetCancelUrl("testShoppingCartId"),
-                ErrorUrl = urlProvider.GetErrorUrl()
+                ErrorUrl = urlProvider.GetErrorUrl(),
+                Version = "2.0"
             };
             
             actual.Should().BeEquivalentTo(expected);
@@ -71,9 +73,10 @@ namespace WSPay.Net.Test
             var actual = modelFactory.CreateStatusCheckRequest(RegularShop, "testShoppingCartid");
             var expected = new StatusCheckRequest()
             {
-                Signature = "aa91668118a78018da84f88f1a6fe341",
+                Signature = "7756f016b34d15aaa321f9338d947800ba1f91d268776337490b1fac906cd418a19b8e251d876c26524239f59e772502b945c0e25b06e8a73a3a3cf7656718a0",
                 ShopId= RegularShop.ShopId,
-                ShoppingCartId = "testShoppingCartid"
+                ShoppingCartId = "testShoppingCartid",
+                Version = "2.0"
             };
             
             actual.Should().BeEquivalentTo(expected);
@@ -90,7 +93,8 @@ namespace WSPay.Net.Test
                 Amount = "1525",
                 Stan = "stan",
                 ApprovalCode = "approvalCode",
-                Signature = "8c56fab77dcba8edca85cc5feb618a03"
+                Signature = "fb19368246bfde27ab63381bb2a7282fab33a90330a9d1a54e686f36f2913f5da06d64b60abf1b71bc6a43d82c14623f2120f51e42b3458bf0417a5043a616c6",
+                Version = "2.0"
             };
             
             actual.Should().BeEquivalentTo(expected);
