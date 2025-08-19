@@ -47,7 +47,7 @@ namespace WSPay.Net.Test
                 ShopId = RegularShop.ShopId,
                 ShoppingCartID = "testShoppingCartId",
                 Amount = "15,5",
-                Signature = "8bb5ec7f987f3cf3ce1e3153cfeab963",
+                Signature = "ee06d42e8589d2454b29c91c3ac8587f3c70699cca0f008c5405d3aab3b7f0510d78d17b73d6f8fe2becee865941bd32e6b9f7d5c537f977c97fef276b055844",
                 CustomerFirstName = customer.FirstName,
                 CustomerSurname = customer.LastName,
                 CustomerEmail = customer.Email,
@@ -59,7 +59,8 @@ namespace WSPay.Net.Test
                 FormattedDateTime = "20200401152030",
                 ReturnUrl = urlProvider.GetReturnUrl(),
                 CancelUrl = urlProvider.GetCancelUrl("testShoppingCartId"),
-                ErrorUrl = urlProvider.GetErrorUrl()
+                ErrorUrl = urlProvider.GetErrorUrl(),
+                Version = "2.0"
             };
             
             actual.Should().BeEquivalentTo(expected);

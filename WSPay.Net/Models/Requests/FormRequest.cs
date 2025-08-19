@@ -24,5 +24,7 @@
         public string ErrorUrl { get; set; }
 
         public bool IsPayingWithToken => !string.IsNullOrEmpty(Token);
+
+        public string Version { get; set; }
     }
 }

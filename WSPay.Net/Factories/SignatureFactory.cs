@@ -8,10 +8,10 @@
         public string GenerateFormRequestSignature(Shop shop, string shoppingCartId, double price)
         {
             var formattedPrice = WSPayHelpers.FormatPrice(price);
-            using (var md5Hash = MD5.Create())
+            using (var sha512Hash = SHA512.Create())
             {
                 var data = $"{shop.ShopId}{shop.Secret}{shoppingCartId}{shop.Secret}{formattedPrice}{shop.Secret}";
-                var hashBytes = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(data));
+                var hashBytes = sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(data));
 
                 var sBuilder = new StringBuilder();
 

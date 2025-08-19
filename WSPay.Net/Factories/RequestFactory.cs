@@ -90,7 +90,8 @@
                 FormattedDateTime = timeProvider.Get().ToString("yyyyMMddHHmmss"),
                 ReturnUrl = returnUrlProvider.GetReturnUrl(),
                 CancelUrl = returnUrlProvider.GetCancelUrl(shoppingCartId),
-                ErrorUrl = returnUrlProvider.GetErrorUrl()
+                ErrorUrl = returnUrlProvider.GetErrorUrl(),
+                Version = "2.0"
             };
         }
     }

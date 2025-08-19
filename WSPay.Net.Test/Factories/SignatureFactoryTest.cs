@@ -15,7 +15,7 @@ namespace WSPay.Net.Test
         public void GenerateFormRequestSignature()
         {
             var actual = signatureFactory.GenerateFormRequestSignature(RegularShop, "testCartId", 15.25);
-            actual.Should().Be("9a2235f5a4ef2e0d4a5036e9647a2522");
+            actual.Should().Be("05b44b25ce8883c16e40cff78163ddfd40a5b86baf6f042a848cddebbe9a8db2fc03079f7cfa31c13d469f262ad93540445f9433a8df51dff689c59ec1596234");
         }
         
         [Fact]
