@@ -23,8 +23,7 @@
             var shop = WSPayConfiguration.TokenShop;
 
             var formattedPrice = WSPayHelpers.FormatPrice(price);
-            var signature = signatureFactory.GenerateFormRequestSignature(WSPayConfiguration.TokenShop, shoppingCartId,
-                price);
+            var signature = signatureFactory.GenerateFormRequestSignature(WSPayConfiguration.TokenShop, shoppingCartId, price);
             
             return new ProcessPaymentRequest
             {
@@ -34,16 +33,15 @@
                 Signature = signature,
                 Token = token,
                 TokenNumber = tokenNumber,
-                DateTime = timeProvider.Get().ToString("yyyyMMddHHmmss")
+                DateTime = timeProvider.Get().ToString("yyyyMMddHHmmss"),
+                Version = "2.0"   
             };
         }
 
         public ChangeTransactionStatusRequest CreateChangeTransactionStatusRequest(Shop shop, string wsPayOrderId, string stan, string approvalCode, double price)
         {
             var formattedPrice = WSPayHelpers.FormatPrice(price);
-            var signature =
-                signatureFactory.GenerateChangeTransactionStatusSignature(shop, wsPayOrderId, stan,
-                    approvalCode, price);
+            var signature = signatureFactory.GenerateChangeTransactionStatusSignature(shop, wsPayOrderId, stan, approvalCode, price);
             
             return new ChangeTransactionStatusRequest
             {
@@ -52,7 +50,8 @@
                 Amount = formattedPrice,
                 Stan = stan,
                 ApprovalCode = approvalCode,
-                Signature = signature
+                Signature = signature,
+                Version = "2.0"
             };
         }
         

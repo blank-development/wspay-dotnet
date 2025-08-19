@@ -22,5 +22,8 @@ namespace WSPay.Net
         
         [JsonProperty("Signature")]
         public string Signature { get; set; }
+
+        [JsonProperty("Version")]
+        public string Version { get; set; }
     }
 }

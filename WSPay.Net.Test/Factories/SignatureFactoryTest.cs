@@ -3,7 +3,7 @@ namespace WSPay.Net.Test
     using FluentAssertions;
     using Xunit;
     
-    public class SignatureFactoryTest: WSPayTestBase
+    public class SignatureFactoryTest : WSPayTestBase
     {
         private readonly ISignatureFactory signatureFactory;
         public SignatureFactoryTest()
@@ -22,7 +22,7 @@ namespace WSPay.Net.Test
         public void GenerateChangeTransactionStatusSignature()
         {
             var actual = signatureFactory.GenerateChangeTransactionStatusSignature(RegularShop, "testCartId", "stan", "approvalCode", 15.25);
-            actual.Should().Be("811a70921015b6b95e6541da6d73cf43");
+            actual.Should().Be("960cc4ad9c2f8dd73be60fe5a9095f322ae13f44af5a94023cf4c17eaf31ad87d70f0f8347cb50005a8cb8881a93529ef05ac6ae00937e5db77e54c58fde6c76");
         }
         
         [Fact]
